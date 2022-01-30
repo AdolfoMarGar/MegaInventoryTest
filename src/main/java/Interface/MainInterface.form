@@ -249,7 +249,7 @@
                   </grid>
                 </constraints>
                 <properties>
-                  <text value="1112256 "/>
+                  <text value="1112256"/>
                 </properties>
               </component>
               <component id="b5e96" class="javax.swing.JTextField" binding="txt_DescriptionProduct">
@@ -269,7 +269,7 @@
                   </grid>
                 </constraints>
                 <properties>
-                  <text value="44.99  "/>
+                  <text value="44.99"/>
                 </properties>
               </component>
               <component id="ef211" class="javax.swing.JTextField" binding="txt_SellingPriceProduct">
@@ -363,7 +363,7 @@
                   </grid>
                 </constraints>
                 <properties>
-                  <text value="Example 20, Athens "/>
+                  <text value="Example 20, Athens"/>
                 </properties>
               </component>
             </children>

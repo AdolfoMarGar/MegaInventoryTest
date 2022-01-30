@@ -5,11 +5,11 @@ import Modules.Update.*;
 import Services.ApiServices;
 import Services.Util;
 import com.google.gson.Gson;
-
+import javax.json.JsonObject;
 import javax.swing.*;
+import javax.ws.rs.core.Response;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import static java.awt.Frame.MAXIMIZED_BOTH;
 
 public class MainInterface {
@@ -40,20 +40,37 @@ public class MainInterface {
 
 
     final ApiServices apiServices = new ApiServices();
-    MvProduct mvProduct;
-    UpdateProduct updateProduct;
-    MvDiscount mvDiscount;
     UpdateDiscount updateDiscount;
-    MvTax mvTax;
+    UpdateProduct updateProduct;
     UpdateTax updateTax;
-    MvInventoryLocation mvInventoryLocation;
     UpdateInventoryLocation updateInventoryLocation;
-    MvSupplierClient mvSupplierClient;
     UpdateSupplierClient updateSupplierClient;
+    UpdateSalesOrder updateSalesOrder;
+
+    JsonObject jsonInvLoc;
+    JsonObject jsonTax;
+    JsonObject jsonDisc;
+
+    MvProduct mvProduct;
+    MvDiscount mvDiscount;
+    MvTax mvTax;
+    MvInventoryLocation mvInventoryLocation;
+    MvSupplierClient mvSupplierClient;
+    MvSalesOrderRow mvSalesOrderRow;
+    MvSalesOrder mvSalesOrder;
 
     Gson gson = new Gson();
     String jsonString;
 
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("App");
+        frame.setContentPane(new MainInterface().panelMain);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+        frame.setDefaultLookAndFeelDecorated(true);
+        frame.setExtendedState(MAXIMIZED_BOTH);
+    }
 
     public MainInterface() {
         btn_CreateSalesOrder.addActionListener(new ActionListener() {
@@ -64,19 +81,17 @@ public class MainInterface {
                 createTax();
                 createInventoryLocation();
                 createSupplierClient();
-
+                if(updateDiscount!=null && updateProduct!=null && updateTax!=null && updateInventoryLocation!=null && updateSupplierClient!=null){
+                    postProduct();
+                    postDiscount();
+                    postTax();
+                    postInventoryLocation();
+                    postSupplierClient();
+                    createSalesOrder();
+                    postSalesOrder();
+                }
             }
         });
-    }
-    public static void main(String args[]) {
-        JFrame frame = new JFrame("App");
-        frame.setContentPane(new MainInterface().panelMain);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
-        frame.setDefaultLookAndFeelDecorated(true);
-        frame.setExtendedState(MAXIMIZED_BOTH);
-
     }
 
     public void createProduct(){
@@ -98,8 +113,6 @@ public class MainInterface {
                     }else{
                         mvProduct = new MvProduct(productSKU,productDescription,psp,ppp);
                         updateProduct = new UpdateProduct(mvProduct,"InsertOrUpdate");
-                        jsonString = gson.toJson(updateProduct);
-                        System.out.println(jsonString);
                     }
                 }
             }else{
@@ -108,8 +121,19 @@ public class MainInterface {
         }catch (Exception ex){
             Util.msg_error("Error parsing","Enter a number.");
         }
-
     }
+    public void postProduct() {
+        jsonString = gson.toJson(updateProduct);
+        Response response = apiServices.requestPost(jsonString,"/Product/ProductUpdate");
+        int status=-1;
+        status = response.getStatus();
+        if(status==200){
+            Util.msg_info("Product status.","Product successfully inserted or updated.");
+        }else{
+            Util.msg_error("Product error.","Error : "+status);
+        }
+    }
+
     public void createDiscount(){
         String name;
         String description;
@@ -128,7 +152,6 @@ public class MainInterface {
                         mvDiscount = new MvDiscount(name,description,value);
                         updateDiscount = new UpdateDiscount(mvDiscount,"InsertOrUpdate");
                         jsonString = gson.toJson(updateDiscount);
-                        System.out.println(jsonString);
                     }
                 }
             }else{
@@ -138,6 +161,19 @@ public class MainInterface {
             Util.msg_error("Error parsing","Enter a number, don't add '%'.");
         }
     }
+    public void postDiscount() {
+        jsonString = gson.toJson(updateDiscount);
+        Response response = apiServices.requestPost(jsonString,"/Discount/DiscountUpdate");
+        int status=-1;
+        status = response.getStatus();
+        if(status==200){
+            jsonDisc = response.readEntity(JsonObject.class);
+            Util.msg_info("Discount status.","Discount successfully inserted or updated.");
+        }else{
+            Util.msg_error("Discount error.","Error : "+status);
+        }
+    }
+
     public void createTax(){
         String name;
         String description;
@@ -156,7 +192,6 @@ public class MainInterface {
                         mvTax = new MvTax(name,description,value);
                         updateTax = new UpdateTax(mvTax,"InsertOrUpdate");
                         jsonString = gson.toJson(updateTax);
-                        System.out.println(jsonString);
                     }
                 }
             }else{
@@ -166,6 +201,19 @@ public class MainInterface {
             Util.msg_error("Error parsing","Enter a number, don't add '%'.");
         }
     }
+    public void postTax() {
+        jsonString = gson.toJson(updateTax);
+        Response response = apiServices.requestPost(jsonString,"/Tax/TaxUpdate");
+        int status=-1;
+        status = response.getStatus();
+        if(status==200){
+            jsonTax = response.readEntity(JsonObject.class);
+            Util.msg_info("Tax status.","Tax successfully inserted or updated.");
+        }else{
+            Util.msg_error("Tax error.","Error : "+status);
+        }
+    }
+
     public void createInventoryLocation(){
         String name;
         String abbreviation;
@@ -174,7 +222,6 @@ public class MainInterface {
         name = txt_NameInvLocation.getText();
         abbreviation = txt_AbbreviatonInvLocation.getText();
         address = txt_AddresInvLocation.getText();
-
 
         if (name.equals("")){
             Util.msg_warning("Empty field","Name can't be empty");
@@ -188,11 +235,23 @@ public class MainInterface {
                     mvInventoryLocation = new MvInventoryLocation(name,abbreviation,address);
                     updateInventoryLocation = new UpdateInventoryLocation(mvInventoryLocation,"InsertOrUpdate");
                     jsonString = gson.toJson(updateInventoryLocation);
-                    System.out.println(jsonString);
                 }
             }
         }
     }
+    public void postInventoryLocation() {
+        jsonString = gson.toJson(updateInventoryLocation);
+        Response response = apiServices.requestPost(jsonString,"/InventoryLocation/InventoryLocationUpdate");
+        int status=-1;
+        status = response.getStatus();
+        if(status==200){
+            jsonInvLoc = response.readEntity(JsonObject.class);
+            Util.msg_info("InventoryLocation status.","InventoryLocation successfully inserted or updated.");
+        }else{
+            Util.msg_error("InventoryLocation error.","Error : "+status);
+        }
+    }
+
     public void createSupplierClient(){
         String name;
         String address;
@@ -207,14 +266,76 @@ public class MainInterface {
         if (name.equals("")){
             Util.msg_warning("Empty field","Name can't be empty");
         }else{
-
             mvSupplierClient = new MvSupplierClient(name,address,Email,Phone);
             updateSupplierClient = new UpdateSupplierClient(mvSupplierClient,"InsertOrUpdate");
             jsonString = gson.toJson(updateSupplierClient);
-            System.out.println(jsonString);
-
         }
+    }
+    public void postSupplierClient() {
+        jsonString = gson.toJson(updateSupplierClient);
+        Response response = apiServices.requestPost(jsonString,"/SupplierClient/SupplierClientUpdate");
+        int status=-1;
+        status = response.getStatus();
+        if(status==200){
+            Util.msg_info("SupplierClient status.","SupplierClient successfully inserted or updated.");
+        }else{
+            Util.msg_error("SupplierClient error.","Error : "+status);
+        }
+    }
 
+    public int getIDInvLoc(){
+        String auxString;
+        JsonObject jsonAux = jsonInvLoc.getJsonObject("mvInventoryLocation");
+        auxString = jsonAux.get("InventoryLocationID").toString();
+        return  Integer.parseInt(auxString);
+    }
+    public int getIDTax(){
+        String auxString;
+        JsonObject jsonAux = jsonDisc.getJsonObject("mvDiscount");
+        auxString = jsonAux.get("DiscountID").toString();
+        return  Integer.parseInt(auxString);
+    }
+    public int getIDDiscount(){
+        String auxString;
+        JsonObject jsonAux = jsonTax.getJsonObject("mvTax");
+        auxString = jsonAux.get("TaxID").toString();
+        return  Integer.parseInt(auxString);
+    }
+    public void createSalesOrder(){
+        String ProductSKU = mvProduct.getProductSKU();
+        double Quantity;
+        double UnitPriceWithoutTaxOrDiscount =mvProduct.getProductSellingPrice();
+        try{
+            Quantity = Double.parseDouble(txt_QuantitySalesOrder.getText());
+            if (Quantity<1){
+                Util.msg_warning("Error.","Enter a number greater than 0.");
+            }else{
+                mvSalesOrderRow = new MvSalesOrderRow(
+                        ProductSKU,Quantity,0,0,
+                        UnitPriceWithoutTaxOrDiscount,getIDTax(),getIDDiscount()
+                );
 
+                mvSalesOrder = new MvSalesOrder(
+                        3,0,mvSupplierClient.getSupplierClientName(),
+                        mvSupplierClient.getSupplierClientShippingAddress1(),"Verified",
+                        mvSalesOrderRow,getIDInvLoc()
+                );
+
+                updateSalesOrder = new UpdateSalesOrder(mvSalesOrder,"InsertOrUpdate");
+            }
+        }catch (Exception ex){
+            Util.msg_error("Error parsing","Enter a number.");
+        }
+    }
+    public void  postSalesOrder(){
+        jsonString = gson.toJson(updateSalesOrder);
+        Response response = apiServices.requestPost(jsonString,"/SalesOrder/SalesOrderUpdate");
+        int status=-1;
+        status = response.getStatus();
+        if(status==200){
+            Util.msg_info("SalesOrder status.","SalesOrder successfully inserted or updated.");
+        }else{
+            Util.msg_error("SalesOrder error.","Error : "+status);
+        }
     }
 }

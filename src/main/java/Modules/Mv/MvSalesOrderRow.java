@@ -6,19 +6,17 @@ public class MvSalesOrderRow {
     double SalesOrderRowShippedQuantity;
     double SalesOrderRowInvoicedQuantity;
     double SalesOrderRowUnitPriceWithoutTaxOrDiscount;
-    double SalesOrderTotalTaxAmount;
-    double SalesOrderRowTotalDiscountAmount;
-    double SalesOrderRowTotalAmount;
+    int SalesOrderRowTaxID ;
+    int SalesOrderRowDiscountID ;
 
-    public MvSalesOrderRow(String salesOrderRowProductSKU, double salesOrderRowQuantity, double salesOrderRowShippedQuantity, double salesOrderRowInvoicedQuantity, double salesOrderRowUnitPriceWithoutTaxOrDiscount, double salesOrderTotalTaxAmount, double salesOrderRowTotalDiscountAmount, double salesOrderRowTotalAmount) {
+    public MvSalesOrderRow(String salesOrderRowProductSKU, double salesOrderRowQuantity, double salesOrderRowShippedQuantity, double salesOrderRowInvoicedQuantity, double salesOrderRowUnitPriceWithoutTaxOrDiscount, int salesOrderRowTaxID, int salesOrderRowDiscountID) {
         SalesOrderRowProductSKU = salesOrderRowProductSKU;
         SalesOrderRowQuantity = salesOrderRowQuantity;
         SalesOrderRowShippedQuantity = salesOrderRowShippedQuantity;
         SalesOrderRowInvoicedQuantity = salesOrderRowInvoicedQuantity;
         SalesOrderRowUnitPriceWithoutTaxOrDiscount = salesOrderRowUnitPriceWithoutTaxOrDiscount;
-        SalesOrderTotalTaxAmount = salesOrderTotalTaxAmount;
-        SalesOrderRowTotalDiscountAmount = salesOrderRowTotalDiscountAmount;
-        SalesOrderRowTotalAmount = salesOrderRowTotalAmount;
+        SalesOrderRowTaxID = salesOrderRowTaxID;
+        SalesOrderRowDiscountID = salesOrderRowDiscountID;
     }
 
     public String getSalesOrderRowProductSKU() {
@@ -61,27 +59,19 @@ public class MvSalesOrderRow {
         SalesOrderRowUnitPriceWithoutTaxOrDiscount = salesOrderRowUnitPriceWithoutTaxOrDiscount;
     }
 
-    public double getSalesOrderTotalTaxAmount() {
-        return SalesOrderTotalTaxAmount;
+    public int getSalesOrderRowTaxID() {
+        return SalesOrderRowTaxID;
     }
 
-    public void setSalesOrderTotalTaxAmount(double salesOrderTotalTaxAmount) {
-        SalesOrderTotalTaxAmount = salesOrderTotalTaxAmount;
+    public void setSalesOrderRowTaxID(int salesOrderRowTaxID) {
+        SalesOrderRowTaxID = salesOrderRowTaxID;
     }
 
-    public double getSalesOrderRowTotalDiscountAmount() {
-        return SalesOrderRowTotalDiscountAmount;
+    public int getSalesOrderRowDiscountID() {
+        return SalesOrderRowDiscountID;
     }
 
-    public void setSalesOrderRowTotalDiscountAmount(double salesOrderRowTotalDiscountAmount) {
-        SalesOrderRowTotalDiscountAmount = salesOrderRowTotalDiscountAmount;
-    }
-
-    public double getSalesOrderRowTotalAmount() {
-        return SalesOrderRowTotalAmount;
-    }
-
-    public void setSalesOrderRowTotalAmount(double salesOrderRowTotalAmount) {
-        SalesOrderRowTotalAmount = salesOrderRowTotalAmount;
+    public void setSalesOrderRowDiscountID(int salesOrderRowDiscountID) {
+        SalesOrderRowDiscountID = salesOrderRowDiscountID;
     }
 }

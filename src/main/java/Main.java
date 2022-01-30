@@ -51,13 +51,7 @@ public class Main {
                 50,
                 20,
                 20,
-                mvProduct.getProductSellingPrice()*20,
-                mvProduct.getProductSellingPrice()*20*(mvTax.getTaxValue()/100),
-                mvProduct.getProductSellingPrice()*20*(mvDiscount.getDiscountValue()/100),
-                (mvProduct.getProductSellingPrice()*20)
-                        -(mvProduct.getProductSellingPrice()*20*(mvDiscount.getDiscountValue()/100))
-                        +(mvProduct.getProductSellingPrice()*20*(mvTax.getTaxValue()/100))
-        );
+                mvProduct.getProductSellingPrice()*20,0,0);
 
         MvSalesOrder mvSalesOrder = new MvSalesOrder(
                 3,
