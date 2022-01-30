@@ -2,22 +2,23 @@ package Modules.Update;
 
 import Modules.Apikey;
 import Modules.Mv.MvDiscount;
+import Modules.Mv.MvProduct;
 
 public class UpdateProduct extends Apikey {
-    MvDiscount mvDiscount;
+    MvProduct mvProduct;
     String mvRecordAction;
 
-    public UpdateProduct(MvDiscount mvDiscount, String mvRecordAction) {
-        this.mvDiscount = mvDiscount;
+    public UpdateProduct(MvProduct mvProduct, String mvRecordAction) {
+        this.mvProduct = mvProduct;
         this.mvRecordAction = mvRecordAction;
     }
 
-    public MvDiscount getMvDiscount() {
-        return mvDiscount;
+    public MvProduct getMvProduct() {
+        return mvProduct;
     }
 
-    public void setMvDiscount(MvDiscount mvDiscount) {
-        this.mvDiscount = mvDiscount;
+    public void setMvProduct(MvProduct mvProduct) {
+        this.mvProduct = mvProduct;
     }
 
     public String getMvRecordAction() {

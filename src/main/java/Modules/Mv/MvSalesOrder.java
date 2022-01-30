@@ -7,15 +7,24 @@ public class MvSalesOrder {
     String SalesOrderShippingAddress;
     String SalesOrderStatus;
     MvSalesOrderRow SalesOrderDetails;
+    int SalesOrderInventoryLocationID;
 
-    public MvSalesOrder(int salesOrderTypeId, int salesOrderClientID, String salesOrderClientName, String salesOrderShippingAddress, String salesOrderStatus, MvSalesOrderRow salesOrderDetails) {
-
+    public MvSalesOrder(int salesOrderTypeId, int salesOrderClientID, String salesOrderClientName, String salesOrderShippingAddress, String salesOrderStatus, MvSalesOrderRow salesOrderDetails, int salesOrderInventoryLocationID) {
         SalesOrderTypeId = salesOrderTypeId;
         SalesOrderClientID = salesOrderClientID;
         SalesOrderClientName = salesOrderClientName;
         SalesOrderShippingAddress = salesOrderShippingAddress;
         SalesOrderStatus = salesOrderStatus;
         SalesOrderDetails = salesOrderDetails;
+        SalesOrderInventoryLocationID = salesOrderInventoryLocationID;
+    }
+
+    public int getSalesOrderInventoryLocationID() {
+        return SalesOrderInventoryLocationID;
+    }
+
+    public void setSalesOrderInventoryLocationID(int salesOrderInventoryLocationID) {
+        SalesOrderInventoryLocationID = salesOrderInventoryLocationID;
     }
 
     public int getSalesOrderTypeId() {
