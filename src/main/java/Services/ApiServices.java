@@ -11,19 +11,20 @@ public class ApiServices {
     WebTarget target;
     Invocation.Builder request;
 
-    public void startOperation(String endURL){
+    private void startOperation(String endURL){
         client = ClientBuilder.newClient();
         target = client.target(URL+endURL);
         request = target.request().accept(MediaType.APPLICATION_JSON);
     }
-    
-    public void endOperation(){
+
+    private void endOperation(){
         client.close();
     }
 
     public Response requestPost(String jsonString,String endURL){
         startOperation(endURL);
         Response post = request.post(Entity.json(jsonString));
+        endOperation();
 
         return post;
     }

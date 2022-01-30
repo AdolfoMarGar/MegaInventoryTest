@@ -1,10 +1,19 @@
 
+import Interface.MainInterface;
 import Modules.Mv.*;
 import Modules.Update.*;
+import Services.ApiServices;
 import com.google.gson.Gson;
+
+import javax.ws.rs.core.Response;
 
 public class Main {
     public static void main (String [ ] args) {
+        MainInterface mainInterface = new MainInterface();
+
+
+
+
         MvDiscount mvDiscount = new MvDiscount("NombreDesc","Descrip",5.5);
         UpdateDiscount discountUpdate = new UpdateDiscount(mvDiscount,"InsertOrUpdate");
         Gson gson = new Gson();
@@ -55,7 +64,7 @@ public class Main {
                 5,
                 mvSupplierClient.getSupplierClientName(),
                 mvSupplierClient.getSupplierClientShippingAddress1(),
-                "Verified ",
+                "Verified",
                 mvSalesOrderRow,
                 3
         );
