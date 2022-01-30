@@ -151,7 +151,6 @@ public class MainInterface {
                     }else{
                         mvDiscount = new MvDiscount(name,description,value);
                         updateDiscount = new UpdateDiscount(mvDiscount,"InsertOrUpdate");
-                        jsonString = gson.toJson(updateDiscount);
                     }
                 }
             }else{
@@ -191,7 +190,6 @@ public class MainInterface {
                     }else{
                         mvTax = new MvTax(name,description,value);
                         updateTax = new UpdateTax(mvTax,"InsertOrUpdate");
-                        jsonString = gson.toJson(updateTax);
                     }
                 }
             }else{
@@ -234,7 +232,6 @@ public class MainInterface {
                 }else{
                     mvInventoryLocation = new MvInventoryLocation(name,abbreviation,address);
                     updateInventoryLocation = new UpdateInventoryLocation(mvInventoryLocation,"InsertOrUpdate");
-                    jsonString = gson.toJson(updateInventoryLocation);
                 }
             }
         }
@@ -268,7 +265,6 @@ public class MainInterface {
         }else{
             mvSupplierClient = new MvSupplierClient(name,address,Email,Phone);
             updateSupplierClient = new UpdateSupplierClient(mvSupplierClient,"InsertOrUpdate");
-            jsonString = gson.toJson(updateSupplierClient);
         }
     }
     public void postSupplierClient() {
