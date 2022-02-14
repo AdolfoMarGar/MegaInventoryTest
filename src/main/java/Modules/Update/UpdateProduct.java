@@ -3,8 +3,9 @@ package Modules.Update;
 import Modules.Apikey;
 import Modules.Mv.MvDiscount;
 import Modules.Mv.MvProduct;
+import Modules.ToJson;
 
-public class UpdateProduct extends Apikey {
+public class UpdateProduct extends Apikey implements ToJson {
     MvProduct mvProduct;
     String mvRecordAction;
 
@@ -28,4 +29,8 @@ public class UpdateProduct extends Apikey {
     public void setMvRecordAction(String mvRecordAction) {
         this.mvRecordAction = mvRecordAction;
     }
+
+
+
+
 }

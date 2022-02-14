@@ -27,4 +27,5 @@ public class UpdateTax extends Apikey {
     public void setMvRecordAction(String mvRecordAction) {
         this.mvRecordAction = mvRecordAction;
     }
+
 }

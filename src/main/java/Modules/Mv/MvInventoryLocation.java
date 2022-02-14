@@ -4,6 +4,7 @@ public class MvInventoryLocation {
     String InventoryLocationName;
     String InventoryLocationAbbreviation;
     String InventoryLocationAddress;
+    int InventoryLocationID;
 
     public MvInventoryLocation(String inventoryLocationName, String inventoryLocationAbbreviation, String inventoryLocationAddress) {
         InventoryLocationName = inventoryLocationName;
@@ -34,4 +35,12 @@ public class MvInventoryLocation {
     public void setInventoryLocationAddress(String inventoryLocationAddress) {
         InventoryLocationAddress = inventoryLocationAddress;
     }
+
+    public void setInventoryId (int inventorId){
+        InventoryLocationID = inventorId;
+    }
+    public  int getInventoryId(){
+        return InventoryLocationID;
+    }
+
 }

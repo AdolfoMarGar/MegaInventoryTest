@@ -47,7 +47,6 @@ public class MainInterface {
     UpdateSupplierClient updateSupplierClient;
     UpdateSalesOrder updateSalesOrder;
 
-    JsonObject jsonInvLoc;
     JsonObject jsonTax;
     JsonObject jsonDisc;
 
@@ -122,8 +121,9 @@ public class MainInterface {
             Util.msg_error("Error parsing","Enter a number.");
         }
     }
+
     public void postProduct() {
-        jsonString = gson.toJson(updateProduct);
+        jsonString = updateProduct.ToJson();
         Response response = apiServices.requestPost(jsonString,"/Product/ProductUpdate");
         int status=-1;
         status = response.getStatus();
@@ -160,6 +160,7 @@ public class MainInterface {
             Util.msg_error("Error parsing","Enter a number, don't add '%'.");
         }
     }
+
     public void postDiscount() {
         jsonString = gson.toJson(updateDiscount);
         Response response = apiServices.requestPost(jsonString,"/Discount/DiscountUpdate");
@@ -199,6 +200,7 @@ public class MainInterface {
             Util.msg_error("Error parsing","Enter a number, don't add '%'.");
         }
     }
+
     public void postTax() {
         jsonString = gson.toJson(updateTax);
         Response response = apiServices.requestPost(jsonString,"/Tax/TaxUpdate");
@@ -236,13 +238,20 @@ public class MainInterface {
             }
         }
     }
+
     public void postInventoryLocation() {
+        int id;
         jsonString = gson.toJson(updateInventoryLocation);
         Response response = apiServices.requestPost(jsonString,"/InventoryLocation/InventoryLocationUpdate");
         int status=-1;
         status = response.getStatus();
         if(status==200){
-            jsonInvLoc = response.readEntity(JsonObject.class);
+            String auxString;
+            JsonObject jsonAux = response.readEntity(JsonObject.class).getJsonObject("mvInventoryLocation");
+            auxString = jsonAux.get("InventoryLocationID").toString();
+            mvInventoryLocation.setInventoryId(Integer.parseInt(auxString));
+
+
             Util.msg_info("InventoryLocation status.","InventoryLocation successfully inserted or updated.");
         }else{
             Util.msg_error("InventoryLocation error.","Error : "+status);
@@ -267,6 +276,7 @@ public class MainInterface {
             updateSupplierClient = new UpdateSupplierClient(mvSupplierClient,"InsertOrUpdate");
         }
     }
+
     public void postSupplierClient() {
         jsonString = gson.toJson(updateSupplierClient);
         Response response = apiServices.requestPost(jsonString,"/SupplierClient/SupplierClientUpdate");
@@ -279,24 +289,21 @@ public class MainInterface {
         }
     }
 
-    public int getIDInvLoc(){
-        String auxString;
-        JsonObject jsonAux = jsonInvLoc.getJsonObject("mvInventoryLocation");
-        auxString = jsonAux.get("InventoryLocationID").toString();
-        return  Integer.parseInt(auxString);
-    }
+
     public int getIDTax(){
         String auxString;
         JsonObject jsonAux = jsonDisc.getJsonObject("mvDiscount");
         auxString = jsonAux.get("DiscountID").toString();
         return  Integer.parseInt(auxString);
     }
+
     public int getIDDiscount(){
         String auxString;
         JsonObject jsonAux = jsonTax.getJsonObject("mvTax");
         auxString = jsonAux.get("TaxID").toString();
         return  Integer.parseInt(auxString);
     }
+
     public void createSalesOrder(){
         String ProductSKU = mvProduct.getProductSKU();
         double Quantity;
@@ -314,7 +321,7 @@ public class MainInterface {
                 mvSalesOrder = new MvSalesOrder(
                         3,0,mvSupplierClient.getSupplierClientName(),
                         mvSupplierClient.getSupplierClientShippingAddress1(),"Verified",
-                        mvSalesOrderRow,getIDInvLoc()
+                        mvSalesOrderRow,mvInventoryLocation.getInventoryId()
                 );
 
                 updateSalesOrder = new UpdateSalesOrder(mvSalesOrder,"InsertOrUpdate");
@@ -323,6 +330,7 @@ public class MainInterface {
             Util.msg_error("Error parsing","Enter a number.");
         }
     }
+
     public void  postSalesOrder(){
         jsonString = gson.toJson(updateSalesOrder);
         Response response = apiServices.requestPost(jsonString,"/SalesOrder/SalesOrderUpdate");
